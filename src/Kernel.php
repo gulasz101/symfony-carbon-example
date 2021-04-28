@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Doctrine\DateTimeDefaultPrecision;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
@@ -34,5 +35,13 @@ class Kernel extends BaseKernel
         } elseif (is_file($path = \dirname(__DIR__).'/config/routes.php')) {
             (require $path)($routes->withPath($path), $this);
         }
+    }
+
+    public function registerBundles(): iterable
+    {
+        date_default_timezone_set('UTC');
+        DateTimeDefaultPrecision::set(7);
+
+        return [];
     }
 }
