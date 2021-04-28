@@ -33,6 +33,7 @@ class CleanupOldTrackingsService
         $repository = $this->entityManager->getRepository(Tracking::class);
 
         $repository->createQueryBuilder('q')
+            ->delete()
             ->andWhere('q.createdAt < :createdAt')
             ->setParameter(
                 ':createdAt',
