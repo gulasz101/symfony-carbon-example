@@ -3,11 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\TrackingRepository;
+use Carbon\Carbon;
 use Carbon\Doctrine\CarbonType;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=TrackingRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Tracking
 {
@@ -21,17 +23,17 @@ class Tracking
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private string $tracking_number;
+    private ?string $trackingNumber;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="carbon")
      */
-    private CarbonType $created_at;
+    private \DateTime $createdAt;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="carbon")
      */
-    private CarbonType $updated_at;
+    private \DateTime $updatedAt;
 
     public function getId(): ?int
     {
@@ -40,37 +42,54 @@ class Tracking
 
     public function getTrackingNumber(): ?string
     {
-        return $this->tracking_number;
+        return $this->trackingNumber;
     }
 
-    public function setTrackingNumber(?string $tracking_number): self
+    public function setTrackingNumber(?string $trackingNumber): self
     {
-        $this->tracking_number = $tracking_number;
+        $this->trackingNumber = $trackingNumber;
 
         return $this;
     }
 
     public function getCreatedAt(): CarbonType
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $created_at): self
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     public function getUpdatedAt(): CarbonType
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updated_at): self
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
-        $this->updated_at = $updated_at;
+        $this->updatedAt = $updatedAt;
 
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedAtValue(): void
+    {
+        $this->createdAt = Carbon::now();
+        $this->setUpdatedAtValue();
+    }
+
+    /**
+     * @ORM\PreUpdate()
+     */
+    public function setUpdatedAtValue()
+    {
+        $this->updatedAt = Carbon::now();
     }
 }

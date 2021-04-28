@@ -10,11 +10,13 @@ use Carbon\Carbon;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
- * Class CleanupOldTrackings
+ * Class CleanupOldTrackingsService
  * @package App\Services\Tracking
  */
-class CleanupOldTrackings
+class CleanupOldTrackingsService
 {
+    public const MAX_TRACKING_AGE_IN_DAYS = 30;
+
     private EntityManagerInterface $entityManager;
 
     /**
@@ -31,8 +33,11 @@ class CleanupOldTrackings
         $repository = $this->entityManager->getRepository(Tracking::class);
 
         $repository->createQueryBuilder('q')
-            ->andWhere('q.created_at < :created_at')
-            ->setParameter('created_at', Carbon::now()->subDays(30))
+            ->andWhere('q.createdAt < :createdAt')
+            ->setParameter(
+                ':createdAt',
+                Carbon::now()->subDays(self::MAX_TRACKING_AGE_IN_DAYS)
+            )
             ->getQuery()
             ->execute();
     }
