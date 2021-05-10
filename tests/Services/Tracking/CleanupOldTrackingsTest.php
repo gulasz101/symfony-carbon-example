@@ -31,9 +31,9 @@ class CleanupOldTrackingsTest extends KernelTestCase
 
 		$this->faker = Factory::create();
 
-        $this->cleanupOldTrackingsService = self::$container->get(CleanupOldTrackingsService::class);
-        $this->em = self::$container->get(EntityManagerInterface::class);
-    }
+		$this->cleanupOldTrackingsService = self::$container->get(CleanupOldTrackingsService::class);
+		$this->em = self::$container->get(EntityManagerInterface::class);
+	}
 
 	public function testDeleteOnlyTrackingOlderThanMaxAge(): void
 	{
