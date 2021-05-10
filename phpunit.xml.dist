@@ -19,12 +19,6 @@
         </testsuite>
     </testsuites>
 
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">src</directory>
-        </whitelist>
-    </filter>
-
     <!-- Run `composer require symfony/phpunit-bridge` before enabling this extension -->
     <!--
     <listeners>

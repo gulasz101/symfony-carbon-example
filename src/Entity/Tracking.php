@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Repository\TrackingRepository;
 use Carbon\Carbon;
-use Carbon\Doctrine\CarbonType;
+use Carbon\CarbonImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,12 +28,12 @@ class Tracking
 	/**
 	 * @ORM\Column(type="carbon")
 	 */
-	private CarbonType $createdAt;
+	private CarbonImmutable $createdAt;
 
 	/**
 	 * @ORM\Column(type="carbon")
 	 */
-	private CarbonType $updatedAt;
+	private CarbonImmutable $updatedAt;
 
 	public function getId(): ?int
 	{
@@ -52,24 +52,24 @@ class Tracking
 		return $this;
 	}
 
-	public function getCreatedAt(): CarbonType
+	public function getCreatedAt(): CarbonImmutable
 	{
 		return $this->createdAt;
 	}
 
-	public function setCreatedAt(CarbonType $createdAt): self
+	public function setCreatedAt(CarbonImmutable $createdAt): self
 	{
 		$this->createdAt = $createdAt;
 
 		return $this;
 	}
 
-	public function getUpdatedAt(): CarbonType
+	public function getUpdatedAt(): CarbonImmutable
 	{
 		return $this->updatedAt;
 	}
 
-	public function setUpdatedAt(CarbonType $updatedAt): self
+	public function setUpdatedAt(CarbonImmutable $updatedAt): self
 	{
 		$this->updatedAt = $updatedAt;
 
@@ -81,7 +81,7 @@ class Tracking
 	 */
 	public function setCreatedAtValue(): void
 	{
-		$this->createdAt = new CarbonType();
+		$this->createdAt = Carbon::now()->toImmutable();
 		$this->setUpdatedAtValue();
 	}
 
@@ -90,6 +90,6 @@ class Tracking
 	 */
 	public function setUpdatedAtValue(): void
 	{
-		$this->updatedAt = new CarbonType();
+		$this->updatedAt = Carbon::now()->toImmutable();
 	}
 }

@@ -54,7 +54,7 @@ class CleanupOldTrackingsTest extends KernelTestCase
 	private function factoryTracking(): void
 	{
 		$tracking = new Tracking();
-		$tracking->setTrackingNumber($this->faker->uuid);
+		$tracking->setTrackingNumber($this->faker->uuid());
 
 		$this->em->persist($tracking);
 		$this->em->flush();
