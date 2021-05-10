@@ -15,31 +15,31 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class CleanupOldTrackingsService
 {
-    public const MAX_TRACKING_AGE_IN_DAYS = 30;
+	public const MAX_TRACKING_AGE_IN_DAYS = 30;
 
-    private EntityManagerInterface $entityManager;
+	private EntityManagerInterface $entityManager;
 
-    /**
-     * @required
-     */
-    public function setEntityManager(EntityManagerInterface $entityManager): void
-    {
-        $this->entityManager = $entityManager;
-    }
+	/**
+	 * @required
+	 */
+	public function setEntityManager(EntityManagerInterface $entityManager): void
+	{
+		$this->entityManager = $entityManager;
+	}
 
-    public function deleteOldTrackings(): void
-    {
-        /** @var TrackingRepository $repository */
-        $repository = $this->entityManager->getRepository(Tracking::class);
+	public function deleteOldTrackings(): void
+	{
+		/** @var TrackingRepository $repository */
+		$repository = $this->entityManager->getRepository(Tracking::class);
 
-        $repository->createQueryBuilder('q')
-            ->delete()
-            ->andWhere('q.createdAt < :createdAt')
-            ->setParameter(
-                ':createdAt',
-                Carbon::now()->subDays(self::MAX_TRACKING_AGE_IN_DAYS)
-            )
-            ->getQuery()
-            ->execute();
-    }
+		$repository->createQueryBuilder('q')
+			->delete()
+			->andWhere('q.createdAt < :createdAt')
+			->setParameter(
+				':createdAt',
+				Carbon::now()->subDays(self::MAX_TRACKING_AGE_IN_DAYS)
+			)
+			->getQuery()
+			->execute();
+	}
 }

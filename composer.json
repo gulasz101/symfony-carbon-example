@@ -1,10 +1,12 @@
 {
+    "name": "symfony/carbonexample",
+    "description": "symfony/carbonexample",
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": ">=7.4",
+        "php": ">=8.0",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "composer/package-versions-deprecated": "1.11.99.1",
@@ -51,6 +53,19 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "xdebug-disable": [
+            "if [ -f /.dockerenv ] && [ \"\" != \"$(php -m | grep -i xdebug 2>&1)\" ] ; then rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && echo OK ; fi"
+        ],
+        "xdebug-enable": [
+            "if [ -f /.dockerenv ] && [ \"\" = \"$(php -m | grep -i xdebug 2>&1)\" ] ; then docker-php-ext-enable xdebug && echo OK ; fi"
+        ],
+        "quality-checks": [
+            "@xdebug-disable",
+            "vendor/bin/parallel-lint --exclude ./vendor ./",
+            "vendor/bin/ecs check",
+            "vendor/bin/phpstan analyse -c phpstan.neon --memory-limit=512M",
+            "@xdebug-enable"
         ]
     },
     "conflict": {
@@ -65,11 +80,14 @@
     "require-dev": {
         "dama/doctrine-test-bundle": "^6.5",
         "fakerphp/faker": "^1.14",
+        "php-parallel-lint/php-parallel-lint": "^1.3",
+        "phpstan/phpstan": "^0.12.86",
         "phpunit/phpunit": "^9.5",
         "rachidlaasri/travel": "^1.06",
         "symfony/browser-kit": "^5.2",
         "symfony/css-selector": "^5.2",
         "symfony/maker-bundle": "^1.30",
-        "symfony/phpunit-bridge": "^5.2"
+        "symfony/phpunit-bridge": "^5.2",
+        "symplify/easy-coding-standard": "^9.3"
     }
 }
